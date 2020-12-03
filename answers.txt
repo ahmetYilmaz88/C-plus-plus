@@ -1,0 +1,245 @@
+/// @file pa16.cpp
+/// @author Ahmet Yilmaz <ahmet.yilmaz@student.csn.edu>
+/// @date 2020-07-11
+/// @note I pledge my word of honor that I have complied with the
+/// CSN Academic Integrity Policy while completing this assignment.
+/// @brief This is the interface for the linked list functions.
+/// @note Linked lists exercises
+/// DO NOT ALTER THIS INTERFACE
+
+2. 
+Two typical components of a single linked list node are info and link
+Info: to store the info
+Link: to store the address of the next node
+
+4.
+If first is a pointer to a linked list, then first element of the 
+linked list stored in first.
+
+6.
+a.
+info stored in p is 12, so it will print 12.
+
+b.
+q is assigned to the next node of the p, so it becomes 92
+and current points to the 65 as info
+so the answers are 92 and 65.
+
+c.
+current->link->info points to the info in the next node after current
+so the answer is 80.
+
+d.
+trail assigned to the 2 node after the current
+so the answer is 46.
+
+e.
+Last is the last element of the linked list, unless it is circled linked list
+it will not display any output
+In our case there is no output.
+
+f.
+first statement sets q to 80
+and the cout statement displays the 2 node after the q,
+so the answer is 5.
+
+8.
+a.
+first statement sets trail to next node after temp which is 5.
+second statement breaks the chain between linked list and the last element
+third statement delete last deallocates the memory
+last statement assign trail to the last node in memory.
+The affect of the a was that the last node was deleted from the list
+
+b.
+it deletes the node between the temp-> and the last element
+it assign last to temp->link so the info of 5 is deleted from the list.
+
+c.
+the statement replaces the value in the first node(47) with 58.
+
+d.
+first statement assign next node after current to the q pointer.
+second statement assign temp to the current link which jumps one element in between
+third statement delete that node pointed by the q. 
+this process remove one node(80) from the list.
+
+e.
+first statement assign 3 node after p to the pointer q(80).
+second statement replaces the values stored in q pointer(80) by 60.
+so the process changes the value of 80 to 60.
+
+f.
+the statement assign temp to the link of p.
+this process results with deleting the nodes
+ between p and where p now points to(92,65,80).
+ 
+10.
+a.
+the statement assign list->link which is second node to the pointer p
+so it is a valid statement.
+
+b.
+the statement assign the first node to the pointer first
+so it is a valid statement.
+
+c.
+the statement delete the nodes after temp
+so it is a valid statement.
+
+d.
+the statement assign the value of temp to the next node of current
+the statement tries to assign an integer to the pointer
+so it is an invalid statement.
+
+e.
+the statement is assigning dereferenced value to the pointer p
+so it is an invalid statement.
+
+f.
+similar to the d
+the statement tries to assign an integer to the pointer
+so it is an invalid statement.
+
+g.
+the statement is assigning the value from current to the next value of p
+so it is a valid statement.
+
+h.
+the statement tries to assign an integer to the pointer
+so it is an invalid statement.
+
+i.
+the statement copies the value from temp to the list
+so it is a valid statement.
+
+j.
+the second part of the statement goes out of list 
+last->link->link will not do anything
+so it is an invalid statement.
+
+k.
+the trail does not point to anything
+so it is an invalid statement.
+
+12.
+a.
+the statement prints all the values of the list.
+the loop prints all the values except the last value,
+when first equal to last the loop breaks
+and the last value printed outside of the loop
+47 12 92 65 80 46 5 78
+
+b.
+the statement prints the last value
+current-> only == nullptr when it reaches the last value
+and the current->info becomes the last value
+78
+
+c.
+since while loop does not have curly brackets
+it only has the following cout statement
+it causes an infinite loop of printing info of p forever
+12 12 12 12...
+
+14.
+first statement trail becomes 5
+second statement temp goes to the last node in the list
+third statement assigning the adress of temp(65) to the current(46)
+fourth statement assign current to the nullptr
+fifth statement breaks the list
+since current also assign as the last node
+the process does not return anything.
+
+16.
+first statement creates new node named current
+second statement add value 72 to the current info
+third statement assign link of current to nullptr
+fourth statement current to trail
+fifth statement creates new node named current
+sixth statement assign info to 46
+seventh statement assign trail to next node of current
+eight statementassign current to list
+ninth statement creates new node named current
+tenth statement assign assign info to 52
+11th statement assign current to next node of list
+12th statement assign trail to next node of current
+13th statement assign current to trail
+14th statement creates new node named current
+15th statement add value 91 to the current info
+16th statement assign trail->link to the next node of current
+17th statement assign current to the next node of trail
+18th statement assign list to the current 
+and the loop prints out the following
+46 52 91 72
+
+18.
+a.
+pointer list points to the first node of the linked list
+
+b.
+25 16 12
+
+c.
+ptr = new nodeType;
+ptr->info = 45;
+ptr->link = list->link->link;
+list->link->link =ptr;
+
+d.
+ptr = new nodeType;
+ptr->info = 58;
+ptr->link = list;
+list = ptr;
+
+No, it does not require change the value of the pointer that was pointing
+to the first node of the linked list.
+
+e.
+ptr = list;
+list = list->link;
+delete ptr;
+
+No, it does not require change the value of the pointer that was pointing
+to the first node of the linked list.
+
+20.
+Ordered list is a sorted list as unordered is not
+unordered list create only 1 node as ordered have 3 nodes.
+in ordered list you have to check the place of insertFirst function
+in unordered list you can just insert without checking.
+
+22.
+it add all the integers divisible by 3 or 4 to the front of the list
+and adds rest of the integers to the end of the list as input order.
+list = 16 120 64 40 12 45 35 83 23 11 98 
+ and copy list has exact same values as 33 and 58 was not in the list
+copylist = 16 120 64 40 12 45 35 83 23 11 98 
+
+24.
+         UML for
+        
+        dvdType
+---------------------------------------------
+- dvdTitle: string;
+- movieStar1: string;
+- movieStar2: string; 
+- movieProducer: string;
+- movieDirector: string;
+- movieProductionCo: string;
+- copiesInStock: int;
+--------------------------------------------
++ operator<<(ostream&, const dvdType&): ostream&   
++ setDVDInfo(string, string, string, string, string, string, int): void 
++ getNoOfCopiesInStock() const: int    
++ checkOut(): void 
++ checkIn(): void   
++ printTitle() const: void   
++ printInfo() const: void 
++ checkTitle(string): bool
++ updateInStock(int): void  
++ setCopiesInStock(int): void  
++ getTitle() const: void  
++ dvdType(string, string, string, string, string, string, int): void 
++ operator==(const dvdType&) const: bool
++ operator!=(const dvdType&) const: bool
