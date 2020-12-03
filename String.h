@@ -3,7 +3,7 @@
 /// @date 2020-06-20
 /// @note I pledge my word of honor that I have complied with the
 /// CSN Academic Integrity Policy while completing this assignment.
-/// @brief This is the interface for the String class.
+/// @brief This is the interface for the String class and operator overloading.
 /// @note Time taken to complete this assignment is more than 10 hours
 
 #ifndef STRING_H_
@@ -13,6 +13,7 @@
 #include <cstddef>
 #include <iostream>
 #include <iomanip>
+#include <cstring>
 
 /// A class that models a string.
 
@@ -35,13 +36,14 @@ public:
     /// @param other Another String used to initialize this String.
     /// -----------------------------------------------------------------------
 
-    String(const String& other);
+    String(const String& other)
+        :String(other.begin()){}
 
     /// -----------------------------------------------------------------------
     /// Destructor
     /// -----------------------------------------------------------------------
 
-    ~String() {delete [] str;}
+    ~String();
 
     /// -----------------------------------------------------------------------
     /// Replaces the contents of this string with that of another.
@@ -74,8 +76,8 @@ public:
     /// @return Reference to the first character (equivalent to str[0]).
     /// -----------------------------------------------------------------------
 
-    char& front();
-    const char& front() const;
+    char& front() {return str[0];}
+    const char& front() const {return str[0];}
 
     /// -----------------------------------------------------------------------
     /// Returns reference to the last character in the string. The behavior is
@@ -84,8 +86,8 @@ public:
     /// @return Reference to the last character (equivalent to str[size() - 1])
     /// -----------------------------------------------------------------------
 
-    char& back();
-    const char& back() const;
+    char& back() {return empty() ? front() : str[size() - 1];}
+    const char& back() const {return empty() ? front() : str[size() - 1];}
 
     /// -----------------------------------------------------------------------
     /// Returns an iterator (pointer) to the first character in the string.
@@ -104,8 +106,8 @@ public:
     /// character.
     /// -----------------------------------------------------------------------
 
-    char* end();
-    const char* end() const;
+    char* end() {return begin() + size();}
+    const char* end() const {return begin() + size();}
 
     /// -----------------------------------------------------------------------
     /// Checks if the string has no character, i.e., whether begin() == end().
@@ -127,7 +129,7 @@ public:
     /// iterators are invalidated.
     /// -----------------------------------------------------------------------
 
-    void clear();
+    void clear() {assign("");}
 
     /// -----------------------------------------------------------------------
     /// Appends null-terminated string s to the string
@@ -138,7 +140,7 @@ public:
     /// -----------------------------------------------------------------------
 
     String& append(const char* s);
-    String& append(const String& other);
+    String& append(const String& other) { return append(other.begin()); }
 
     /// -----------------------------------------------------------------------
     /// Exchanges the contents of the string with those of other. All iterators
@@ -155,15 +157,30 @@ public:
     /// @param [in,out] output (Optional) The output stream.
     /// -----------------------------------------------------------------------
 
-    void print(std::ostream& output) const;
+    void print(std::ostream& output= std::cout) const{ output << begin();}
 
     /// This is a special value equal to the maximum value representable by
     /// the type size_t. The exact meaning depends on context, but it is
     /// generally used either as an end of string indicator by functions
     /// that expect a string index or as the error indicator by functions
     /// that return a string index.
+    
+    /// Replaces the contents of the String.
+    String& operator=(const String& other) {return assign(other);}
+    String& operator=(const char* s) {return assign(s);}
+
+    /// Returns a reference to the character at specified position pos.
+    /// No bounds checking is performed.
+    char& operator[](size_t pos) {return at(pos);}
+    const char& operator[](size_t pos) const {return at(pos);}
+
+    /// Appends additional characters to the string.
+    String& operator+=(const String& other) {return append(other);}
+    String& operator+=(const char* s) {return append(s);}
+    String& operator+=(char ch) {return append(&ch);}
 
     static constexpr size_t NPOS = static_cast<size_t>(-1);
+    
 
 private:
     char*  str    = nullptr;    ///< Pointer to the string in heap memory.
@@ -190,6 +207,42 @@ String concat(const String& lhs, const String& rhs);
 
 bool equal(const String& lhs, const String& rhs);
 
-static constexpr size_t NPOS = static_cast<size_t>(-1);
+/// Returns a string containing characters from lhs followed by
+/// the characters from rhs.
+
+String operator+(const String& lhs, const String& rhs);
+String operator+(const String& lhs, const char* rhs);
+String operator+(const String& lhs, char rhs);
+
+/// Relational operators.
+bool operator==(const String& lhs, const String& rhs);
+bool operator!=(const String& lhs, const String& rhs);
+bool operator< (const String& lhs, const String& rhs);
+bool operator> (const String& lhs, const String& rhs);
+bool operator<=(const String& lhs, const String& rhs);
+bool operator>=(const String& lhs, const String& rhs);
+
+/// Behaves as a formatted output function.
+/// Uses the range [str.begin(), str.end()) as is.
+std::ostream& operator<<(std::ostream& os, const String& string);
+
+/// Behaves as formatted input function.
+/// Skips leading whitespace. Clears str with str.clear(), then reads
+/// characters from is and appends them to str until:
+///   * end-of-file condition occurs in the stream 'is'
+///   * the next character c in 'is' is whitespace
+///     (This whitespace character remains in the input stream.)
+std::istream& operator>>(std::istream& is, String& string);
+
+/// Reads characters from an input stream and places them into a String.
+/// Clears string with string.clear(), then extracts characters from
+/// input until one of the following occurs:
+///   * end-of-file condition on input
+///   * the next available input character is delim, in which case
+///     the delimiter character is extracted from input, but is not
+///     appended to str.
+/// The default delimiter is the endline character '\\n'
+std::istream& getline(std::istream& input, String& string, char delim = '\n');
 
 #endif
+/* EOF */

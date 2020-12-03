@@ -1,36 +1,25 @@
-# Makefile for 2020-summer-cs202-pa12
-
-PROJ=pa12
-TESTDIR=/home/shared/cs202/$(PROJ)
+# Makefile for 2020-summer-cs202-pa13
 
 CXX=/usr/bin/clang++
-OPTIONS=-std=c++14 -Weverything -g \
-	-Werror=return-type -Wold-style-cast \
-	-Wno-padded -Wno-c++98-c++11-compat -Wno-c++98-compat
+CXXFLAGS=-std=c++14 -Weverything -g \
+        -Werror=return-type -Wno-padded -Wold-style-cast \
+        -Wno-c++98-c++11-compat -Wno-c++98-compat
 
-SRCS=String.cpp pa12.cpp
-HDRS=String.h String.h
-OBJS=String.o pa12.o
-EXE=$(PROJ)
+pa13: pa13.o String.o
+	$(CXX) -o pa13 pa13.o String.o $(CXXFLAGS)
 
-$(EXE): $(OBJS)
-	$(CXX) $(OBJS) -o $(EXE) $(OPTIONS)
+pa13.o: pa13.cpp String.h
+	$(CXX) -c pa13.cpp $(CXXFLAGS)
 
 String.o: String.cpp String.h
-	$(CXX) -c String.cpp $(OPTIONS)
+	$(CXX) -c String.cpp $(CXXFLAGS)
 
-pa12.o: pa12.cpp String.h
-	$(CXX) -c pa12.cpp $(OPTIONS)
-
-judge:
-	@judge -p $(EXE) -i $(TESTDIR)/$(PROJ)-input0.txt -o $(TESTDIR)/$(PROJ)-output0.txt -l || :
-	@judge -p $(EXE) -i $(TESTDIR)/$(PROJ)-input1.txt -o $(TESTDIR)/$(PROJ)-output1.txt -l || :
+test: pa13-test.cpp String.o catch.hpp
+	$(CXX) -o pa13-test pa13-test.cpp String.o $(CXXFLAGS)
+	@[ -f pa13-test ] && ./pa13-test
 
 clean:
-	@rm -f $(OBJS) $(EXE) *.gch *.log
+	@rm -rf pa13.o String.o pa13 pa13-test
 
-turnin: pa11 judge
-	@cpplint --filter=-,+legal/copyright $(SRCS) $(HDRS)
-	@echo
-	turnin -c cs202 -p $(PROJ) -v $(HDRS) $(SRCS) Makefile
-
+turnin:
+	turnin -c cs202 -p pa13 -v pa13.cpp String.cpp String.h pa13-test.cpp catch.hpp Makefile
