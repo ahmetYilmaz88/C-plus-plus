@@ -1,25 +1,22 @@
-# Makefile for 2020-summer-cs202-pa13
+# Makefile for 2020-summer-cs202-pa10
 
 CXX=/usr/bin/clang++
-CXXFLAGS=-std=c++14 -Weverything -g \
-        -Werror=return-type -Wno-padded -Wold-style-cast \
-        -Wno-c++98-c++11-compat -Wno-c++98-compat
+OPTIONS=-std=c++14 -Weverything -g \
+	-Werror=return-type -Wno-padded -Wold-style-cast \
+	-Wno-c++98-c++11-compat -Wno-c++98-compat
 
-pa13: pa13.o String.o
-	$(CXX) -o pa13 pa13.o String.o $(CXXFLAGS)
+pa10: pa10.o Polygon.o 
+	$(CXX) pa10.o Polygon.o -o pa10 $(OPTIONS)
 
-pa13.o: pa13.cpp String.h
-	$(CXX) -c pa13.cpp $(CXXFLAGS)
+pa10.o: pa10.cpp Polygon.h
+	$(CXX) -c pa10.cpp $(OPTIONS)
 
-String.o: String.cpp String.h
-	$(CXX) -c String.cpp $(CXXFLAGS)
-
-test: pa13-test.cpp String.o catch.hpp
-	$(CXX) -o pa13-test pa13-test.cpp String.o $(CXXFLAGS)
-	@[ -f pa13-test ] && ./pa13-test
+Polygon.o: Polygon.cpp Polygon.h
+	$(CXX) -c Polygon.cpp $(OPTIONS)
 
 clean:
-	@rm -rf pa13.o String.o pa13 pa13-test
+	@rm -f *.o pa10
 
 turnin:
-	turnin -c cs202 -p pa13 -v pa13.cpp String.cpp String.h pa13-test.cpp catch.hpp Makefile
+	@cpplint --filter=-,+legal/copyright pa10.cpp Polygon.h Polygon.cpp
+	turnin -c cs202 -p pa10 -v pa10.cpp Polygon.h Polygon.cpp Makefile
